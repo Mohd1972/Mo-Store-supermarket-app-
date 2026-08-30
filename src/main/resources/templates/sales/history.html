@@ -1,0 +1,31 @@
+<html th:replace="~{fragments/layout :: layout('Sales History', ~{::content})}"
+      xmlns:th="http://www.thymeleaf.org">
+<body>
+<div th:fragment="content">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h5 class="mb-0">Sales History</h5>
+        <a class="btn btn-sm-primary" th:href="@{/sales/pos}"><i class="bi bi-cash-coin"></i> New Sale</a>
+    </div>
+    <div class="card">
+        <div class="card-body p-0">
+            <table class="table mb-0">
+                <thead><tr><th>Receipt</th><th>Date</th><th>Cashier</th><th>Customer</th><th class="text-end">Total</th><th></th></tr></thead>
+                <tbody>
+                <tr th:each="s : ${sales}">
+                    <td th:text="${s.receiptNumber}">receipt</td>
+                    <td th:text="${#temporals.format(s.saleDate, 'yyyy-MM-dd HH:mm')}">date</td>
+                    <td th:text="${s.cashier != null ? s.cashier.username : 'System'}">cashier</td>
+                    <td th:text="${s.customerName != null ? s.customerName : '—'}">—</td>
+                    <td class="text-end" th:text="'TSh ' + ${#numbers.formatDecimal(s.grandTotal, 1, 'COMMA', 2, 'POINT')}">0</td>
+                    <td><a class="btn btn-sm btn-outline-secondary" th:href="@{/sales/{id}(id=${s.id})}"><i class="bi bi-receipt"></i> Receipt</a></td>
+                </tr>
+                <tr th:if="${#lists.isEmpty(sales)}">
+                    <td colspan="6" class="text-center text-muted">No sales yet</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+</body>
+</html>

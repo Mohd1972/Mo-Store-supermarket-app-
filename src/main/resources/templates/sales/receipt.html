@@ -1,0 +1,57 @@
+<html th:replace="~{fragments/layout :: layout('Receipt ' + ${sale.receiptNumber}, ~{::content})}"
+      xmlns:th="http://www.thymeleaf.org">
+<body>
+<div th:fragment="content">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-body">
+                    <div class="text-center mb-3">
+                        <h4 class="mb-0">Mo Store</h4>
+                        <small class="text-muted">Receipt</small>
+                        <div class="mt-2">
+                            <div><strong>Receipt:</strong> <span th:text="${sale.receiptNumber}"></span></div>
+                            <div><strong>Date:</strong> <span th:text="${#temporals.format(sale.saleDate, 'yyyy-MM-dd HH:mm:ss')}"></span></div>
+                            <div><strong>Cashier:</strong> <span th:text="${sale.cashier != null ? sale.cashier.username : 'System'}"></span></div>
+                            <div th:if="${sale.customerName != null && !sale.customerName.isEmpty()}">
+                                <strong>Customer:</strong> <span th:text="${sale.customerName}"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <hr>
+                    <table class="table table-sm">
+                        <thead>
+                        <tr><th>Item</th><th class="text-center">Qty</th><th class="text-end">Price</th><th class="text-end">Total</th></tr>
+                        </thead>
+                        <tbody>
+                        <tr th:each="item : ${sale.items}">
+                            <td th:text="${item.product.name}"></td>
+                            <td class="text-center" th:text="${item.quantity}"></td>
+                            <td class="text-end" th:text="'TSh ' + ${#numbers.formatDecimal(item.unitPrice, 1, 'COMMA', 2, 'POINT')}"></td>
+                            <td class="text-end" th:text="'TSh ' + ${#numbers.formatDecimal(item.lineTotal, 1, 'COMMA', 2, 'POINT')}"></td>
+                        </tr>
+                        </tbody>
+                        <tfoot>
+                        <tr><th colspan="3" class="text-end">Subtotal</th>
+                            <th class="text-end" th:text="'TSh ' + ${#numbers.formatDecimal(sale.subtotal, 1, 'COMMA', 2, 'POINT')}"></th></tr>
+                        <tr th:if="${sale.discount != null && sale.discount.compareTo(0) > 0}">
+                            <th colspan="3" class="text-end">Discount</th>
+                            <th class="text-end text-danger" th:text="'-TSh ' + ${#numbers.formatDecimal(sale.discount, 1, 'COMMA', 2, 'POINT')}"></th></tr>
+                        <tr th:if="${sale.taxRate != null && sale.taxRate.compareTo(0) > 0}">
+                            <th colspan="3" class="text-end">Tax (<span th:text="${sale.taxRate}"></span>%)</th>
+                            <th class="text-end" th:text="'TSh ' + ${#numbers.formatDecimal(sale.taxAmount, 1, 'COMMA', 2, 'POINT')}"></th></tr>
+                        <tr><th colspan="3" class="text-end">TOTAL</th>
+                            <th class="text-end" th:text="'TSh ' + ${#numbers.formatDecimal(sale.grandTotal, 1, 'COMMA', 2, 'POINT')}"></th></tr>
+                        </tfoot>
+                    </table>
+                    <div class="text-center">
+                        <button class="btn btn-primary" onclick="window.print()"><i class="bi bi-printer"></i> Print</button>
+                        <a class="btn btn-outline-secondary" th:href="@{/sales}">Back to Sales</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,92 @@
+<html th:replace="~{fragments/layout :: layout('Reports', ~{::content})}"
+      xmlns:th="http://www.thymeleaf.org">
+<body>
+<div th:fragment="content">
+    <div class="card mb-3">
+        <div class="card-body">
+            <form class="row g-2 align-items-end" th:action="@{/reports}" method="get">
+                <div class="col-md-3">
+                    <label class="form-label small">From</label>
+                    <input type="date" class="form-control" name="from" th:value="${start}">
+                </div>
+                <div class="col-md-3">
+                    <label class="form-label small">To</label>
+                    <input type="date" class="form-control" name="to" th:value="${end}">
+                </div>
+                <div class="col-md-2">
+                    <button class="btn btn-sm-primary w-100" type="submit"><i class="bi bi-funnel"></i> Filter</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div class="row g-3 mb-3">
+        <div class="col-md-6">
+            <div class="card stat-card">
+                <div class="card-body d-flex justify-content-between align-items-center">
+                    <div>
+                        <div class="text-muted small">Total Revenue</div>
+                        <div class="fs-4 fw-bold" th:text="'TSh ' + ${#numbers.formatDecimal(totalRevenue, 1, 'COMMA', 2, 'POINT')}">0</div>
+                    </div>
+                    <i class="bi bi-cash-stack text-success icon"></i>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="card stat-card">
+                <div class="card-body d-flex justify-content-between align-items-center">
+                    <div>
+                        <div class="text-muted small">Total Sales</div>
+                        <div class="fs-4 fw-bold" th:text="${totalSales}">0</div>
+                    </div>
+                    <i class="bi bi-receipt text-primary icon"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row g-3">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header bg-white fw-bold">Sales Per Day</div>
+                <div class="card-body p-0">
+                    <table class="table mb-0">
+                        <thead><tr><th>Date</th><th class="text-center"># Sales</th><th class="text-end">Revenue</th></tr></thead>
+                        <tbody>
+                        <tr th:each="sp : ${salesPerDay}">
+                            <td th:text="${sp['date']}">date</td>
+                            <td class="text-center" th:text="${sp['count']}">0</td>
+                            <td class="text-end" th:text="'TSh ' + ${#numbers.formatDecimal(sp['total'], 1, 'COMMA', 2, 'POINT')}">0</td>
+                        </tr>
+                        <tr th:if="${#lists.isEmpty(salesPerDay)}">
+                            <td colspan="3" class="text-center text-muted">No sales in this period</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header bg-white fw-bold">Top Products</div>
+                <div class="card-body p-0">
+                    <table class="table mb-0">
+                        <thead><tr><th>Product</th><th class="text-center">Qty Sold</th><th class="text-end">Revenue</th></tr></thead>
+                        <tbody>
+                        <tr th:each="tp : ${topProducts}">
+                            <td th:text="${tp['name']}">name</td>
+                            <td class="text-center" th:text="${tp['quantity']}">0</td>
+                            <td class="text-end" th:text="'TSh ' + ${#numbers.formatDecimal(tp['revenue'], 1, 'COMMA', 2, 'POINT')}">0</td>
+                        </tr>
+                        <tr th:if="${#lists.isEmpty(topProducts)}">
+                            <td colspan="3" class="text-center text-muted">No data</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

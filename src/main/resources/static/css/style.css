@@ -1,0 +1,221 @@
+:root {
+    --sm-primary: #198754;
+    --sm-primary-dark: #166a44;
+    --sm-primary-050: #eaf6ef;
+    --sm-sidebar-bg: #0f1d17;
+    --sm-sidebar-bg-2: #162820;
+    --sm-sidebar-text: #a9bdb3;
+    --sm-border: #e6ece9;
+    --sm-text: #1f2937;
+    --sm-muted: #6b7280;
+    --sm-white: #ffffff;
+    --sm-bg: #f4f7f5;
+    --sm-radius: .75rem;
+    --sm-shadow: 0 1px 2px rgba(16, 24, 40, .06), 0 1px 3px rgba(16, 24, 40, .08);
+    --sm-shadow-lg: 0 8px 24px rgba(16, 24, 40, .12);
+}
+
+* { box-sizing: border-box; }
+
+html, body { height: 100%; }
+
+body {
+    margin: 0;
+    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+    background-color: var(--sm-bg);
+    color: var(--sm-text);
+    -webkit-font-smoothing: antialiased;
+    color-scheme: light;
+}
+
+/* Layout shell */
+.app-shell { display: flex; min-height: 100vh; }
+
+/* Sidebar */
+.sidebar {
+    width: 248px;
+    flex: 0 0 248px;
+    background: linear-gradient(180deg, var(--sm-sidebar-bg), var(--sm-sidebar-bg-2));
+    color: var(--sm-sidebar-text);
+    display: flex;
+    flex-direction: column;
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    overflow-y: auto;
+}
+
+.sidebar .brand {
+    display: flex;
+    align-items: center;
+    gap: .6rem;
+    color: var(--sm-white);
+    font-weight: 700;
+    font-size: 1.2rem;
+    padding: 1.25rem 1.25rem;
+    border-bottom: 1px solid rgba(255, 255, 255, .08);
+}
+
+.sidebar .brand i { color: #5ad08a; font-size: 1.4rem; }
+
+.sidebar-nav { padding: .6rem; flex: 1; }
+
+.sidebar-nav .nav-link {
+    display: flex;
+    align-items: center;
+    gap: .75rem;
+    color: var(--sm-sidebar-text);
+    border-radius: .5rem;
+    margin: .15rem 0;
+    padding: .6rem .8rem;
+    font-size: .925rem;
+    font-weight: 500;
+    text-decoration: none;
+    transition: background-color .15s ease, color .15s ease;
+}
+
+.sidebar-nav .nav-link i { width: 1.25rem; text-align: center; font-size: 1.05rem; }
+
+.sidebar-nav .nav-link:hover { background: rgba(255, 255, 255, .08); color: var(--sm-white); }
+
+.sidebar-nav .nav-link:focus-visible {
+    outline: 2px solid #5ad08a;
+    outline-offset: 2px;
+}
+
+.sidebar-nav .nav-link.active {
+    background: var(--sm-primary);
+    color: var(--sm-white);
+    box-shadow: 0 4px 12px rgba(25, 135, 84, .35);
+}
+
+/* Main panel */
+.main-panel { flex: 1; min-width: 0; display: flex; flex-direction: column; }
+
+.topbar {
+    background: var(--sm-white);
+    border-bottom: 1px solid var(--sm-border);
+    padding: .9rem 1.75rem;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+}
+
+.topbar-title { font-weight: 700; color: var(--sm-text); margin: 0; }
+
+.user-chip { display: inline-flex; align-items: center; gap: .5rem; font-size: .9rem; }
+.user-chip i { font-size: 1.2rem; color: var(--sm-muted); }
+.role-label { font-size: .8rem; }
+
+.main-content { padding: 1.75rem 1.75rem 3rem; flex: 1; }
+
+/* Cards */
+.card {
+    border: 1px solid var(--sm-border);
+    box-shadow: var(--sm-shadow);
+    border-radius: var(--sm-radius);
+    background: var(--sm-white);
+}
+
+.card-header {
+    background: var(--sm-white);
+    border-bottom: 1px solid var(--sm-border);
+    font-weight: 600;
+    padding: .85rem 1.1rem;
+}
+
+/* Stat cards */
+.stat-card { transition: transform .15s ease, box-shadow .15s ease; }
+.stat-card:hover { transform: translateY(-2px); box-shadow: var(--sm-shadow-lg); }
+.stat-card .icon {
+    width: 3rem; height: 3rem;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.5rem;
+    border-radius: .6rem;
+}
+
+.icon-green { background: var(--sm-primary-050); color: var(--sm-primary); }
+.icon-blue  { background: #e8f1fe; color: #1d6fd6; }
+.icon-info  { background: #e8f6fb; color: #0e7490; }
+.icon-red   { background: #fdecec; color: #d92d3c; }
+
+/* Tables */
+.table { margin-bottom: 0; }
+.table > :not(caption) > * > * { padding: .75rem .9rem; }
+.table thead th {
+    background: var(--sm-bg);
+    border-bottom: 1px solid var(--sm-border);
+    color: var(--sm-muted);
+    font-size: .78rem;
+    text-transform: uppercase;
+    letter-spacing: .04em;
+    font-weight: 600;
+    white-space: nowrap;
+}
+.table tbody tr:hover { background: #f8fbf9; }
+.table td, .table th { vertical-align: middle; }
+
+/* Buttons */
+.btn-sm-primary {
+    background: var(--sm-primary);
+    border: 1px solid var(--sm-primary);
+    color: var(--sm-white);
+    border-radius: .5rem;
+    font-weight: 600;
+    padding: .45rem .95rem;
+    transition: background-color .15s ease, box-shadow .15s ease;
+}
+.btn-sm-primary:hover { background: var(--sm-primary-dark); color: var(--sm-white); }
+.btn-sm-primary:focus-visible {
+    outline: 2px solid var(--sm-primary);
+    outline-offset: 2px;
+}
+
+/* Badges */
+.badge-lowstock { background: #fdecec; color: #d92d3c; }
+.bg-lowstock { background-color: #fef2f2; }
+
+/* Forms */
+.form-control, .form-select {
+    border-radius: .5rem;
+    border: 1px solid #d4dcd7;
+    padding: .5rem .75rem;
+}
+.form-control:focus, .form-select:focus {
+    border-color: var(--sm-primary);
+    box-shadow: 0 0 0 .2rem rgba(25, 135, 84, .15);
+}
+.form-label { font-weight: 600; font-size: .875rem; color: #374151; }
+
+/* Alerts */
+.alert { border-radius: .5rem; }
+
+/* Page intro */
+.page-head { margin-bottom: 1.25rem; }
+.page-head h1 { font-weight: 700; font-size: 1.4rem; text-wrap: balance; }
+
+/* Empty states */
+.empty-state { color: var(--sm-muted); text-align: center; padding: 2rem; }
+
+/* POS product grid */
+.pos-product-card {
+    border: 1px solid var(--sm-border);
+    border-radius: var(--sm-radius);
+    padding: .9rem;
+    background: var(--sm-white);
+    transition: box-shadow .15s ease;
+}
+.pos-product-card:hover { box-shadow: var(--sm-shadow-lg); }
+
+/* Responsive */
+@media (max-width: 991px) {
+    .app-shell { flex-direction: column; }
+    .sidebar { width: 100%; flex: none; height: auto; position: static; }
+    .sidebar-nav .nav { flex-direction: row !important; flex-wrap: wrap; }
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+    * { transition: none !important; animation: none !important; }
+    .stat-card:hover { transform: none; }
+}

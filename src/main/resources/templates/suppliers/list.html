@@ -1,0 +1,37 @@
+<html th:replace="~{fragments/layout :: layout('Suppliers', ~{::content})}"
+      xmlns:th="http://www.thymeleaf.org">
+<body>
+<div th:fragment="content">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h5 class="mb-0">Suppliers</h5>
+        <a class="btn btn-sm-primary" th:href="@{/suppliers/new}"><i class="bi bi-plus-lg"></i> New Supplier</a>
+    </div>
+    <div class="card">
+        <div class="card-body p-0">
+            <table class="table mb-0">
+                <thead><tr><th>Company</th><th>Contact</th><th>Email</th><th>Phone</th><th>Tax ID</th><th>Actions</th></tr></thead>
+                <tbody>
+                <tr th:each="s : ${suppliers}">
+                    <td th:text="${s.companyName}">company</td>
+                    <td th:text="${s.contactName}">contact</td>
+                    <td th:text="${s.email}">email</td>
+                    <td th:text="${s.phone}">phone</td>
+                    <td th:text="${s.taxId}">tax</td>
+                    <td>
+                        <a class="btn btn-sm btn-outline-secondary" th:href="@{/suppliers/{id}/edit(id=${s.id})}" aria-label="Edit supplier"><i class="bi bi-pencil"></i></a>
+                        <form class="d-inline" th:action="@{/suppliers/{id}/delete(id=${s.id})}" method="post"
+                              onsubmit="return confirm('Delete this supplier?')">
+                            <button class="btn btn-sm btn-outline-danger" type="submit" aria-label="Delete supplier"><i class="bi bi-trash"></i></button>
+                        </form>
+                    </td>
+                </tr>
+                <tr th:if="${#lists.isEmpty(suppliers)}">
+                    <td colspan="6" class="text-center text-muted">No suppliers</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+</body>
+</html>

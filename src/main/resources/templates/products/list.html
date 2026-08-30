@@ -1,0 +1,56 @@
+<html th:replace="~{fragments/layout :: layout('Products', ~{::content})}"
+      xmlns:th="http://www.thymeleaf.org">
+<body>
+<div th:fragment="content">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <form class="d-flex" th:action="@{/products}" method="get">
+            <input type="text" name="q" class="form-control" placeholder="Search by name or SKU..."
+                   th:value="${q}">
+            <button class="btn btn-sm-primary ms-2" type="submit" aria-label="Search products"><i class="bi bi-search"></i></button>
+        </form>
+        <a class="btn btn-sm-primary" th:href="@{/products/new}"><i class="bi bi-plus-lg"></i> New Product</a>
+    </div>
+
+    <div class="card">
+        <div class="card-body p-0">
+            <table class="table table-hover mb-0">
+                <thead>
+                <tr><th>SKU</th><th>Name</th><th>Brand</th><th>Unit</th><th>Category</th><th>Supplier</th>
+                    <th class="text-end">Price</th><th class="text-center">Stock</th><th>Actions</th></tr>
+                </thead>
+                <tbody>
+                <tr th:each="p : ${products}">
+                    <td th:text="${p.sku}">SKU</td>
+                    <td>
+                        <span th:text="${p.name}">name</span>
+                        <span th:if="${p.lowStock}" class="badge badge-lowstock ms-1">LOW</span>
+                        <span th:if="${p.expiring}" class="badge text-bg-warning ms-1">EXPIRING</span>
+                    </td>
+                    <td th:text="${p.brand}">brand</td>
+                    <td th:text="${p.unitOfMeasure}">unit</td>
+                    <td th:text="${p.category != null ? p.category.name : '—'}">cat</td>
+                    <td th:text="${p.supplier != null ? p.supplier.companyName : '—'}">supplier</td>
+                    <td class="text-end" th:text="'TSh ' + ${#numbers.formatDecimal(p.price, 1, 'COMMA', 2, 'POINT')}">0</td>
+                    <td class="text-center">
+                        <span class="badge" th:classappend="${p.lowStock} ? 'badge-lowstock' : 'text-bg-success'"
+                              th:text="${p.stock}">0</span>
+                    </td>
+                    <td>
+                        <a class="btn btn-sm btn-outline-secondary" th:href="@{/products/{id}/qr(id=${p.id})}" aria-label="View QR"><i class="bi bi-qr-code"></i></a>
+                        <a class="btn btn-sm btn-outline-secondary" th:href="@{/products/{id}/edit(id=${p.id})}" aria-label="Edit product"><i class="bi bi-pencil"></i></a>
+                        <form class="d-inline" th:action="@{/products/{id}/delete(id=${p.id})}" method="post"
+                              onsubmit="return confirm('Delete this product?')">
+                            <button class="btn btn-sm btn-outline-danger" type="submit" aria-label="Delete product"><i class="bi bi-trash"></i></button>
+                        </form>
+                    </td>
+                </tr>
+                <tr th:if="${#lists.isEmpty(products)}">
+                    <td colspan="9" class="text-center text-muted">No products found</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+</body>
+</html>

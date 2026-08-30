@@ -1,0 +1,72 @@
+<html th:replace="~{fragments/layout :: layout('New Purchase Order', ~{::content})}"
+      xmlns:th="http://www.thymeleaf.org">
+<body>
+<div th:fragment="content">
+    <div class="card">
+        <div class="card-body">
+            <form th:action="@{/purchase-orders}" method="post">
+                <div class="row mb-3">
+                    <div class="col-md-6">
+                        <label class="form-label">Supplier</label>
+                        <select name="supplierId" class="form-select" required>
+                            <option value="">-- Select Supplier --</option>
+                            <option th:each="s : ${suppliers}" th:value="${s.id}" th:text="${s.companyName}"></option>
+                        </select>
+                    </div>
+                    <div class="col-md-3">
+                        <label class="form-label">Expected Delivery</label>
+                        <input type="date" name="expectedDeliveryDate" class="form-control">
+                    </div>
+                    <div class="col-md-3">
+                        <label class="form-label">Notes</label>
+                        <input type="text" name="notes" class="form-control" placeholder="Optional notes">
+                    </div>
+                </div>
+
+                <div class="d-flex justify-content-between align-items-center mb-2">
+                    <label class="form-label mb-0">Order Items</label>
+                    <button type="button" class="btn btn-sm btn-outline-secondary" onclick="addRow()">
+                        <i class="bi bi-plus-lg"></i> Add Item
+                    </button>
+                </div>
+
+                <table class="table table-bordered" id="itemsTable">
+                    <thead>
+                    <tr><th style="width:45%">Product</th><th>Quantity</th><th>Unit Cost (TSh)</th><th style="width:5%"></th></tr>
+                    </thead>
+                    <tbody id="itemsBody">
+                    <tr>
+                        <td>
+                            <select name="productId" class="form-select" required>
+                                <option value="">-- Select --</option>
+                                <option th:each="p : ${products}" th:value="${p.id}">
+                                    <span th:text="${p.name}"></span> (<span th:text="${p.sku}"></span>)
+                                </option>
+                            </select>
+                        </td>
+                        <td><input type="number" name="quantity" class="form-control" min="1" value="1" required></td>
+                        <td><input type="number" name="unitCost" class="form-control" step="0.01" min="0" required></td>
+                        <td><button type="button" class="btn btn-sm btn-outline-danger" onclick="this.closest('tr').remove()" aria-label="Remove item"><i class="bi bi-x"></i></button></td>
+                    </tr>
+                    </tbody>
+                </table>
+
+                <button type="submit" class="btn btn-sm-primary"><i class="bi bi-check-lg"></i> Create Order</button>
+                <a class="btn btn-outline-secondary" th:href="@{/purchase-orders}">Cancel</a>
+            </form>
+        </div>
+    </div>
+    <script th:inline="javascript">
+        function addRow() {
+            var tbody = document.getElementById('itemsBody');
+            var first = tbody.rows[0];
+            var clone = first.cloneNode(true);
+            var selects = clone.querySelectorAll('select, input');
+            selects.forEach(function (el) { el.value = el.type === 'number' ? '' : ''; });
+            if (clone.querySelector('select').value) { clone.querySelector('select').value = ''; }
+            tbody.appendChild(clone);
+        }
+    </script>
+</div>
+</body>
+</html>

@@ -1,0 +1,25 @@
+<html th:replace="~{fragments/layout :: layout(${category.id == null ? 'New Category' : 'Edit Category'}, ~{::content})}"
+      xmlns:th="http://www.thymeleaf.org">
+<body>
+<div th:fragment="content">
+    <div class="card">
+        <div class="card-body">
+            <form th:action="${category.id == null} ? @{/categories} : @{/categories/{id}(id=${category.id})}"
+                  method="post" th:object="${category}">
+                <div class="mb-3">
+                    <label class="form-label">Name</label>
+                    <input type="text" class="form-control" th:field="*{name}" required>
+                    <div class="text-danger" th:errors="*{name}"></div>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Description</label>
+                    <textarea class="form-control" rows="3" th:field="*{description}"></textarea>
+                </div>
+                <button type="submit" class="btn btn-sm-primary"><i class="bi bi-check-lg"></i> Save</button>
+                <a class="btn btn-outline-secondary" th:href="@{/categories}">Cancel</a>
+            </form>
+        </div>
+    </div>
+</div>
+</body>
+</html>

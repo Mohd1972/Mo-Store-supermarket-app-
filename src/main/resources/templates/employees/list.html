@@ -1,0 +1,36 @@
+<html th:replace="~{fragments/layout :: layout('Employees', ~{::content})}"
+      xmlns:th="http://www.thymeleaf.org">
+<body>
+<div th:fragment="content">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h5 class="mb-0">Employee Accounts</h5>
+        <a class="btn btn-sm-primary" th:href="@{/employees/new}"><i class="bi bi-person-plus"></i> New Employee</a>
+    </div>
+    <div class="card">
+        <div class="card-body p-0">
+            <table class="table mb-0">
+                <thead><tr><th>Username</th><th>Full Name</th><th>Role</th><th>Status</th><th>Actions</th></tr></thead>
+                <tbody>
+                <tr th:each="e : ${employees}">
+                    <td th:text="${e.username}">username</td>
+                    <td th:text="${e.fullName}">name</td>
+                    <td><span class="badge text-bg-secondary" th:text="${e.role}">role</span></td>
+                    <td>
+                        <span class="badge" th:classappend="${e.enabled} ? 'text-bg-success' : 'text-bg-secondary'"
+                              th:text="${e.enabled ? 'Enabled' : 'Disabled'}"></span>
+                    </td>
+                    <td>
+                        <a class="btn btn-sm btn-outline-secondary" th:href="@{/employees/{id}/edit(id=${e.id})}" aria-label="Edit employee"><i class="bi bi-pencil"></i></a>
+                        <form class="d-inline" th:action="@{/employees/{id}/delete(id=${e.id})}" method="post"
+                              onsubmit="return confirm('Remove this employee?')">
+                            <button class="btn btn-sm btn-outline-danger" type="submit" aria-label="Delete employee"><i class="bi bi-trash"></i></button>
+                        </form>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+</body>
+</html>

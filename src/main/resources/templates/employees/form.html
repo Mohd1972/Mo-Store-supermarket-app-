@@ -1,0 +1,43 @@
+<html th:replace="~{fragments/layout :: layout(${user.id == null ? 'New Employee' : 'Edit Employee'}, ~{::content})}"
+      xmlns:th="http://www.thymeleaf.org">
+<body>
+<div th:fragment="content">
+    <div class="card">
+        <div class="card-body">
+            <form th:action="${user.id == null} ? @{/employees} : @{/employees/{id}(id=${user.id})}"
+                  method="post" th:object="${user}">
+                <div class="row g-3">
+                    <div class="col-md-6">
+                        <label class="form-label">Username</label>
+                        <input type="text" class="form-control" th:field="*{username}" required
+                               th:disabled="${user.id != null}">
+                        <div class="text-danger" th:errors="*{username}"></div>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label">Full Name</label>
+                        <input type="text" class="form-control" th:field="*{fullName}" required>
+                        <div class="text-danger" th:errors="*{fullName}"></div>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label">Role</label>
+                        <select class="form-select" th:field="*{role}" required>
+                            <option value="">-- Select Role --</option>
+                            <option th:each="r : ${roles}" th:value="${r}" th:text="${r}"></option>
+                        </select>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label" th:text="${user.id == null ? 'Password' : 'New Password (leave blank to keep)'}">Password</label>
+                        <input type="password" class="form-control" name="password"
+                               th:required="${user.id == null}">
+                    </div>
+                </div>
+                <div class="mt-3">
+                    <button type="submit" class="btn btn-sm-primary"><i class="bi bi-check-lg"></i> Save</button>
+                    <a class="btn btn-outline-secondary" th:href="@{/employees}">Cancel</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+</body>
+</html>
